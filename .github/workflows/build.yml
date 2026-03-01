@@ -20,7 +20,7 @@ jobs:
         id: this_repo_latest_release
         uses: cardinalby/git-get-release-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           latest: true
           doNotFailIfNotFound: true
