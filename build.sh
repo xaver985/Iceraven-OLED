@@ -18,7 +18,7 @@ sed -i 's/ff42414d/ff15141a/g' iceraven-patched/smali_classes2/mozilla/component
 sed -i 's/ff52525e/ff15141a/g' iceraven-patched/smali_classes2/mozilla/components/ui/colors/PhotonColors.smali
 
 # Recompile the APK
-java -jar apktool.jar b iceraven-patched -o iceraven-patched.apk --aapt
+java -jar apktool.jar b iceraven-patched -o iceraven-patched.apk
 
 # Align and sign the APK
 zipalign 4 iceraven-patched.apk iceraven-patched-signed.apk
