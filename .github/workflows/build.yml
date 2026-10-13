@@ -41,9 +41,9 @@ jobs:
       - name: Get Latest IceRaven ARM64 Release (Upstream)
         id: get_upstream_release
         run: |
-          LATEST_RELEASE=$(jq -r '.assets[] | select(.name | contains("arm64") and contains("forkRelease.apk")) | .browser_download_url' < <(curl -s https://api.github.com/repos/fork-maintainers/iceraven-browser/releases/latest))
+          LATEST_RELEASE=$(jq -r '.assets[] | select(.name | test("arm64.*\\.apk$")) | .browser_download_url' < <(curl -s https://api.github.com/repos/fork-maintainers/iceraven-browser/releases/latest) | head -n1)
           echo "LATEST_RELEASE=$LATEST_RELEASE" >> $GITHUB_OUTPUT
-          ICERAVEN_VERSION=$(echo "$LATEST_RELEASE" | sed -E 's/.*iceraven-(.*)-browser.*/\1/')
+          ICERAVEN_VERSION=$(echo "$LATEST_RELEASE" | sed -E 's#.*/iceraven-([^/]*)-arm64[^/]*\.apk$#\1#')
           echo "ICERAVEN_VERSION=$ICERAVEN_VERSION" >> $GITHUB_OUTPUT
           echo "Current upstream IceRaven version: $ICERAVEN_VERSION"
 
