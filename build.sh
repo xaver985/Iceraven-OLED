@@ -12,10 +12,12 @@ sed -i 's/<color name="fx_mobile_surface">.*/<color name="fx_mobile_surface">#ff
 sed -i 's/<color name="fx_mobile_background">.*/<color name="fx_mobile_background">#ff000000<\/color>/g' iceraven-patched/res/values-night/colors.xml
 sed -i 's/<color name="fx_mobile_layer_color_2">.*/<color name="fx_mobile_layer_color_2">@color\/photonDarkGrey90<\/color>/g' iceraven-patched/res/values-night/colors.xml
 
-# Smali patching
-sed -i 's/ff2b2a33/ff000000/g' iceraven-patched/smali_classes2/mozilla/components/ui/colors/PhotonColors.smali
-sed -i 's/ff42414d/ff15141a/g' iceraven-patched/smali_classes2/mozilla/components/ui/colors/PhotonColors.smali
-sed -i 's/ff52525e/ff15141a/g' iceraven-patched/smali_classes2/mozilla/components/ui/colors/PhotonColors.smali
+# Smali patching (location varies between smali_classesN dirs across releases)
+photon=$(find iceraven-patched -path '*/smali*/mozilla/components/ui/colors/PhotonColors.smali' | head -n1)
+[ -n "$photon" ] || { echo "PhotonColors.smali not found" >&2; exit 1; }
+sed -i 's/ff2b2a33/ff000000/g' "$photon"
+sed -i 's/ff42414d/ff15141a/g' "$photon"
+sed -i 's/ff52525e/ff15141a/g' "$photon"
 
 # Recompile the APK
 java -jar apktool.jar b iceraven-patched -o iceraven-patched.apk
@@ -24,4 +26,4 @@ java -jar apktool.jar b iceraven-patched -o iceraven-patched.apk
 zipalign 4 iceraven-patched.apk iceraven-patched-signed.apk
 
 # Clean up
-rm -rf iceraven-patched iceraven-patch ed.apk
+rm -rf iceraven-patched iceraven-patched.apk
